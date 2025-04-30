@@ -110,6 +110,9 @@ public class CBORParser extends ParserBase
 
     private final static int[] UTF8_UNIT_CODES = CBORConstants.sUtf8UnitLengths;
 
+    // @since 2.20
+    private final static BigInteger BI_MINUS_ONE = BigInteger.ONE.negate();
+
     // Constants for handling of 16-bit "mini-floats"
     private final static double MATH_POW_2_10 = Math.pow(2, 10);
     private final static double MATH_POW_2_NEG14 = Math.pow(2, -14);
@@ -121,6 +124,18 @@ public class CBORParser extends ParserBase
     // @since 2.14 - require some overrides
     protected final static JacksonFeatureSet<StreamReadCapability> CBOR_READ_CAPABILITIES =
             DEFAULT_READ_CAPABILITIES.with(StreamReadCapability.EXACT_FLOATS);
+
+    /*
+    /**********************************************************************
+    /* Configuration
+    /**********************************************************************
+     */
+    
+    /**
+     * Bit flag composed of bits that indicate which
+     * {@link CBORReadFeature}s are enabled.
+     */
+    protected final int _formatFeatures;
 
     /*
     /**********************************************************************
@@ -141,7 +156,6 @@ public class CBORParser extends ParserBase
 
     /**
      * We will keep track of tag values for possible future use.
-     * @since 2.15
      */
     protected TagList _tagValues = new TagList();
 
@@ -160,8 +174,6 @@ public class CBORParser extends ParserBase
     /**
      * Type to keep track of a list of string references. A depth is stored to know when to pop the
      * references off the stack for nested namespaces.
-     *
-     * @since 2.15
      */
     protected static final class StringRefList
     {
@@ -175,8 +187,6 @@ public class CBORParser extends ParserBase
 
     /**
      * Type to keep a stack of string refs based on namespaces within the document.
-     *
-     * @since 2.15
      */
     protected static final class StringRefListStack {
         public void push(boolean hasNamespace) {
@@ -207,13 +217,11 @@ public class CBORParser extends ParserBase
 
     /**
      * Stack of text and binary string references.
-     * @since 2.15
      */
     protected StringRefListStack _stringRefs = new StringRefListStack();
 
     /**
      * Shared string that should be used in place of _textBuffer when a string reference is used.
-     * @since 2.15
      */
     protected String _sharedString;
 
@@ -255,7 +263,7 @@ public class CBORParser extends ParserBase
     /**
      * Symbol table that contains field names encountered so far
      */
-    final protected ByteQuadsCanonicalizer _symbols;
+    protected final ByteQuadsCanonicalizer _symbols;
 
     /**
      * Temporary buffer used for name parsing.
@@ -274,8 +282,6 @@ public class CBORParser extends ParserBase
      * is used: usually due to set of symbols
      * (Object property names) is unbounded and will not benefit from
      * canonicalization attempts.
-     *
-     * @since 2.13
      */
     protected final boolean _symbolsCanonical;
 
@@ -292,6 +298,7 @@ public class CBORParser extends ParserBase
             boolean bufferRecyclable)
     {
         super(readCtxt, ioCtxt, parserFeatures);
+        _formatFeatures = cborFeatures;
         _symbols = sym;
         _symbolsCanonical = sym.isCanonicalizing();
 
@@ -845,9 +852,15 @@ public class CBORParser extends ParserBase
             _numberBigInt = BigInteger.ZERO;
         } else {
             _streamReadConstraints.validateIntegerLength(_binaryValue.length);
-            BigInteger nr = new BigInteger(_binaryValue);
+            final BigInteger nr;
             if (neg) {
-                nr = nr.negate();
+                if (CBORReadFeature.DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING.enabledIn(_formatFeatures)) {
+                    nr = BI_MINUS_ONE.subtract(new BigInteger(1, _binaryValue));
+                } else {
+                    nr = new BigInteger(_binaryValue).negate();
+                }
+            } else {
+                nr = new BigInteger(_binaryValue);
             }
             _numberBigInt = nr;
         }

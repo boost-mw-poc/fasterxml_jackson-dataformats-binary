@@ -43,23 +43,21 @@ public class CBORMapper extends ObjectMapper
         /******************************************************************
          */
 
-        // 19-Feb-2021, tatu: No parser features for CBOR, yet
-        /*
-        public Builder enable(CBORParser.Feature... features) {
-            for (CBORParser.Feature f : features) {
+        public Builder enable(CBORReadFeature... features) {
+            for (CBORReadFeature f : features) {
                 _formatReadFeatures |= f.getMask();
             }
             return this;
         }
 
-        public Builder disable(CBORParser.Feature... features) {
-            for (CBORParser.Feature f : features) {
+        public Builder disable(CBORReadFeature... features) {
+            for (CBORReadFeature f : features) {
                 _formatReadFeatures &= ~f.getMask();
             }
             return this;
         }
 
-        public Builder configure(CBORParser.Feature feature, boolean state)
+        public Builder configure(CBORReadFeature feature, boolean state)
         {
             if (state) {
                 _formatReadFeatures |= feature.getMask();
@@ -68,7 +66,6 @@ public class CBORMapper extends ObjectMapper
             }
             return this;
         }
-        */
 
         public Builder enable(CBORWriteFeature... features) {
             for (CBORWriteFeature f : features) {

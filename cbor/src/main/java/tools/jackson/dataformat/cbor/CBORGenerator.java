@@ -25,6 +25,8 @@ public class CBORGenerator extends GeneratorBase
 {
     private final static int[] NO_INTS = new int[0];
 
+    private final static BigInteger BI_MINUS_ONE = BigInteger.ONE.negate();
+
     /**
      * Let's ensure that we have big enough output buffer because of safety
      * margins we need for UTF-8 encoding.
@@ -1034,14 +1036,17 @@ public class CBORGenerator extends GeneratorBase
     // Main write method isolated so that it can be called directly
     // in cases where that is needed (to encode BigDecimal)
     protected void _write(BigInteger v) throws JacksonException {
-        /*
-         * Supported by using type tags, as per spec: major type for tag '6'; 5
+        /* Supported by using type tags, as per spec: major type for tag '6'; 5
          * LSB either 2 for positive bignum or 3 for negative bignum. And then
          * byte sequence that encode variable length integer.
          */
         if (v.signum() < 0) {
             _writeByte(BYTE_TAG_BIGNUM_NEG);
-            v = v.negate();
+            if (isEnabled(CBORWriteFeature.ENCODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING)) {
+                v = BI_MINUS_ONE.subtract(v);
+            } else {
+                v = v.negate();
+            }
         } else {
             _writeByte(BYTE_TAG_BIGNUM_POS);
         }

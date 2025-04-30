@@ -5,7 +5,7 @@ import tools.jackson.core.FormatFeature;
 /**
  * Enumeration that defines all togglable features for CBOR generator.
  *<p>
- * NOTE: in Jackson 2.x this was named {@code CBORParser.Feature}.
+ * NOTE: in Jackson 2.x this was named {@code CBORGenerator.Feature}.
  */
 public enum CBORWriteFeature implements FormatFeature
 {
@@ -61,6 +61,24 @@ public enum CBORWriteFeature implements FormatFeature
      * 8-byte values.
      */
     WRITE_MINIMAL_DOUBLES(false),
+
+    /**
+     * Feature that determines how binary tagged negative BigInteger values are
+     * encoded: either using CBOR standard encoding logic (as per spec),
+     * or using legacy Jackson encoding logic (encoding up to Jackson 2.19).
+     * When enabled, uses CBOR standard specified encoding of negative values
+     * (e.g., -1 is encoded {@code [0xC3, 0x41, 0x00]}).
+     * When disabled, maintains backwards compatibility with existing implementations
+     * (e.g., -1 is encoded {@code [0xC3, 0x41, 0x01]}) and uses legacy Jackson encoding.
+     *<p>
+     * Note that there is the counterpart
+     * {@link CBORReadFeature#DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING}
+     * for encoding.
+     *<p>
+     * Default value is {@code false} for backwards-compatibility.
+     */
+    ENCODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING(false),
+
     ;
 
     private final boolean _defaultState;
