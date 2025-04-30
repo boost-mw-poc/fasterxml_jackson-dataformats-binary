@@ -28,7 +28,24 @@ public class CBORParser extends ParserMinimalBase
      */
     public enum Feature implements FormatFeature
     {
-//        BOGUS(false)
+        /**
+         * Feature that determines how binary tagged negative BigInteger values are
+         * decoded: either assuming CBOR standard encoding logic (as per spec),
+         * or the legacy Jackson encoding logic (encoding up to Jackson 2.19).
+         * When enabled, ensures proper encoding of negative values
+         * (e.g., {@code [0xC3, 0x41, 0x00]} is decoded as -1)
+         * When disabled, maintains backwards compatibility with existing implementations
+         * (e.g., {@code [0xC3, 0x41, 0x00]} is decoded as 0).
+         *<p>
+         * Note that there is the counterpart
+         * {@link CBORGenerator.Feature#ENCODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING}
+         * for encoding.
+         *<p>
+         * The default value is {@code false} for backwards compatibility.
+         *
+         * @since 2.20
+         */
+        DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING(false)
         ;
 
         final boolean _defaultState;
@@ -147,6 +164,9 @@ public class CBORParser extends ParserMinimalBase
 
     private final static int[] UTF8_UNIT_CODES = CBORConstants.sUtf8UnitLengths;
 
+    // @since 2.20
+    private final static BigInteger BI_MINUS_ONE = BigInteger.ONE.negate();
+
     // Constants for handling of 16-bit "mini-floats"
     private final static double MATH_POW_2_10 = Math.pow(2, 10);
     private final static double MATH_POW_2_NEG14 = Math.pow(2, -14);
@@ -165,6 +185,14 @@ public class CBORParser extends ParserMinimalBase
     /**********************************************************
      */
 
+    /**
+     * Bit flag composed of bits that indicate which
+     * {@link CBORParser.Feature}s are enabled.
+     *<p>
+     * @since 2.20
+     */
+    protected int _formatFeatures;
+    
     /**
      * Codec used for data binding when (if) requested.
      */
@@ -515,6 +543,7 @@ public class CBORParser extends ParserMinimalBase
             boolean bufferRecyclable)
     {
         super(parserFeatures, ctxt.streamReadConstraints());
+        _formatFeatures = cborFeatures;
         _ioContext = ctxt;
         _objectCodec = codec;
         _symbols = sym;
@@ -561,12 +590,15 @@ public class CBORParser extends ParserMinimalBase
     /**********************************************************
      */
 
-//    public JsonParser overrideStdFeatures(int values, int mask)
+    @Override
+    public final JsonParser overrideFormatFeatures(int values, int mask) {
+        _formatFeatures = (_formatFeatures & ~mask) | (values & mask);
+        return this;
+    }
 
     @Override
-    public int getFormatFeatures() {
-        // No parser features, yet
-        return 0;
+    public final int getFormatFeatures() {
+        return _formatFeatures;
     }
 
     @Override // since 2.12
@@ -1123,9 +1155,15 @@ public class CBORParser extends ParserMinimalBase
             _numberBigInt = BigInteger.ZERO;
         } else {
             _streamReadConstraints.validateIntegerLength(_binaryValue.length);
-            BigInteger nr = new BigInteger(_binaryValue);
+            final BigInteger nr;
             if (neg) {
-                nr = nr.negate();
+                if (Feature.DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING.enabledIn(_formatFeatures)) {
+                    nr = BI_MINUS_ONE.subtract(new BigInteger(1, _binaryValue));
+                } else {
+                    nr = new BigInteger(_binaryValue).negate();
+                }
+            } else {
+                nr = new BigInteger(_binaryValue);
             }
             _numberBigInt = nr;
         }
