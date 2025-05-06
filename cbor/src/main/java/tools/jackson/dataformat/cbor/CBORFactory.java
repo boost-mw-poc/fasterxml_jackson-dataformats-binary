@@ -49,6 +49,12 @@ public class CBORFactory
      */
     final static int DEFAULT_CBOR_GENERATOR_FEATURE_FLAGS = CBORWriteFeature.collectDefaults();
 
+    /**
+     * Bitfield (set of flags) of all generator features that are enabled
+     * by default.
+     */
+    final static int DEFAULT_CBOR_PARSER_FEATURE_FLAGS = CBORReadFeature.collectDefaults();
+
     /*
     /**********************************************************************
     /* Symbol table management

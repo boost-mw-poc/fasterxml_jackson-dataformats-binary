@@ -2,8 +2,8 @@
 module tools.jackson.dataformat.avro
 {
     requires transitive com.fasterxml.jackson.annotation;
-    requires tools.jackson.core;
-    requires tools.jackson.databind;
+    requires transitive tools.jackson.core;
+    requires transitive tools.jackson.databind;
 
     requires org.apache.avro;
 

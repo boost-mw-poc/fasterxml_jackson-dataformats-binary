@@ -1,9 +1,10 @@
 // Ion Main artifact Module descriptor
 module tools.jackson.dataformat.ion
 {
-    requires tools.jackson.core;
-    requires tools.jackson.databind;
-    requires java.sql;
+    requires transitive tools.jackson.core;
+    requires transitive tools.jackson.databind;
+
+    requires java.sql; // why?
 
     // ion-java has no explicit module-info; but automatic name is:
     requires com.amazon.ion;

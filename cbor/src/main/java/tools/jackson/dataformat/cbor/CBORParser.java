@@ -1962,6 +1962,25 @@ public class CBORParser extends ParserBase
         return _binaryValue;
     }
 
+    /**
+     * Checking whether the current token represents an `undefined` value (0xF7).
+     * <p>
+     * This method allows distinguishing between real {@code null} and `undefined`,
+     * even if {@link CBORReadFeature#HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT} is disabled
+     * and the token is reported as {@link JsonToken#VALUE_NULL}.
+     *
+     * @return {@code true} if current token is an `undefined`, {@code false} otherwise
+     *
+     * @since 2.20
+     */
+    public boolean isUndefined() {
+        if ((_currToken == JsonToken.VALUE_NULL) || (_currToken == JsonToken.VALUE_EMBEDDED_OBJECT)) {
+            return (_inputBuffer != null)
+                    && (_inputBuffer[_inputPtr - 1] & 0xFF) == SIMPLE_VALUE_UNDEFINED;
+        }
+        return false;
+    }
+
     /*
     /**********************************************************************
     /* Numeric accessors of public API
@@ -3660,11 +3679,22 @@ expType, type, ch));
      * Helper method to encapsulate details of handling of mysterious `undefined` value
      * that is allowed to be used as something encoder could not handle (as per spec),
      * whatever the heck that should be.
-     * Current definition for 2.9 is that we will be return {@link JsonToken#VALUE_NULL}, but
-     * for later versions it is likely that we will alternatively allow decoding as
-     * {@link JsonToken#VALUE_EMBEDDED_OBJECT} with "embedded value" of `null`.
+     * <p>
+     * For backward compatibility with Jackson 2.10 to 2.19, this value is decoded
+     * as {@link JsonToken#VALUE_NULL} by default.
+     * <p>
+     *
+     * since 2.20 If {@link CBORReadFeature#HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT} is enabled,
+     * the value will instead be decoded as {@link JsonToken#VALUE_EMBEDDED_OBJECT}
+     * with an embedded value of {@code null}.
+     *
+     * @since 2.10
      */
-    protected JsonToken _decodeUndefinedValue() throws JacksonException {
+    protected JsonToken _decodeUndefinedValue() {
+        if (CBORReadFeature.HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT.enabledIn(_formatFeatures)) {
+            _binaryValue = null; // should be clear but just in case
+            return JsonToken.VALUE_EMBEDDED_OBJECT;
+        }
         return JsonToken.VALUE_NULL;
     }
 

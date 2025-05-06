@@ -24,7 +24,7 @@ public class CBORFactoryBuilder extends DecorableTSFBuilder<CBORFactory, CBORFac
         super(StreamReadConstraints.defaults(),
                 StreamWriteConstraints.defaults(),
                 ErrorReportConfiguration.defaults(),
-                0,
+                CBORFactory.DEFAULT_CBOR_PARSER_FEATURE_FLAGS,
                 CBORFactory.DEFAULT_CBOR_GENERATOR_FEATURE_FLAGS);
     }
 
@@ -64,6 +64,38 @@ public class CBORFactoryBuilder extends DecorableTSFBuilder<CBORFactory, CBORFac
         return state ? enable(f) : disable(f);
     }
 
+    // // // Parser features
+
+    public CBORFactoryBuilder enable(CBORReadFeature f) {
+        _formatReadFeatures |= f.getMask();
+        return _this();
+    }
+
+    public CBORFactoryBuilder enable(CBORReadFeature first, CBORReadFeature... other) {
+        _formatReadFeatures |= first.getMask();
+        for (CBORReadFeature f : other) {
+            _formatReadFeatures |= f.getMask();
+        }
+        return _this();
+    }
+
+    public CBORFactoryBuilder disable(CBORReadFeature f) {
+        _formatReadFeatures &= ~f.getMask();
+        return _this();
+    }
+
+    public CBORFactoryBuilder disable(CBORReadFeature first, CBORReadFeature... other) {
+        _formatReadFeatures &= ~first.getMask();
+        for (CBORReadFeature f : other) {
+            _formatReadFeatures &= ~f.getMask();
+        }
+        return _this();
+    }
+
+    public CBORFactoryBuilder configure(CBORReadFeature f, boolean state) {
+        return state ? enable(f) : disable(f);
+    }
+    
     @Override
     public CBORFactory build() {
         // 28-Dec-2017, tatu: No special settings beyond base class ones, so:

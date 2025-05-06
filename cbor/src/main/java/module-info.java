@@ -1,8 +1,8 @@
 // CBOR Main artifact Module descriptor
 module tools.jackson.dataformat.cbor
 {
-    requires tools.jackson.core;
-    requires tools.jackson.databind;
+    requires transitive tools.jackson.core;
+    requires transitive tools.jackson.databind;
 
     exports tools.jackson.dataformat.cbor;
 
