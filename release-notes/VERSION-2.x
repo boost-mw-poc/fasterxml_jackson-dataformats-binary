@@ -14,7 +14,7 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
-2.18.4 (not yet released)
+2.18.4 (06-May-2025)
 
 #569: (ion) `IonParser` fails to parse some `long` values saying
   they are out of range when they are not
