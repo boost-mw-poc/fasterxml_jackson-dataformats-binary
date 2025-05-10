@@ -48,22 +48,23 @@ public class CBORParser extends ParserMinimalBase
         DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING(false),
 
         /**
-         * Feature that determines how an {@code undefined} value ({@code 0xF7}) is decoded.
+         * Feature that determines how an {@code undefined} value ({@code 0xF7}) is exposed
+         * by parser.
          * <p>
-         * When enabled, the parser returns {@link JsonToken#VALUE_EMBEDDED_OBJECT} with a
-         * value of {@code null}, allowing the caller to distinguish {@code undefined} from actual
+         * When enabled, the parser returns {@link JsonToken#VALUE_EMBEDDED_OBJECT} with
+         * a value of {@code null}, allowing the caller to distinguish {@code undefined} from actual
          * {@link JsonToken#VALUE_NULL}.
-         * When disabled (default, for backwards compatibility), {@code undefined} value is
-         * reported as {@link JsonToken#VALUE_NULL}, maintaining legacy behavior
-         * in use up to Jackson 2.19.
+         * When disabled {@code undefined} value is reported as {@link JsonToken#VALUE_NULL}.
+         *<p>
+         * The default value is {@code false} for backwards compatibility (with versions prior to 2.20).
          *
          * @since 2.20
          */
-        HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT(false)
+        READ_UNDEFINED_AS_EMBEDDED_OBJECT(false)
         ;
 
-        final boolean _defaultState;
-        final int _mask;
+        private final boolean _defaultState;
+        private final int _mask;
 
         /**
          * Method that calculates bit set (flags) of all features that
@@ -206,7 +207,7 @@ public class CBORParser extends ParserMinimalBase
      * @since 2.20
      */
     protected int _formatFeatures;
-    
+
     /**
      * Codec used for data binding when (if) requested.
      */
@@ -1933,7 +1934,7 @@ public class CBORParser extends ParserMinimalBase
      * Checking whether the current token represents an `undefined` value (0xF7).
      * <p>
      * This method allows distinguishing between real {@code null} and `undefined`,
-     * even if {@link CBORParser.Feature#HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT} is disabled
+     * even if {@link CBORParser.Feature#READ_UNDEFINED_AS_EMBEDDED_OBJECT} is disabled
      * and the token is reported as {@link JsonToken#VALUE_NULL}.
      *
      * @return {@code true} if current token is an `undefined`, {@code false} otherwise
@@ -3694,14 +3695,14 @@ expType, type, ch));
      * as {@link JsonToken#VALUE_NULL} by default.
      * <p>
      *
-     * since 2.20 If {@link CBORParser.Feature#HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT} is enabled,
+     * since 2.20 If {@link CBORParser.Feature#READ_UNDEFINED_AS_EMBEDDED_OBJECT} is enabled,
      * the value will instead be decoded as {@link JsonToken#VALUE_EMBEDDED_OBJECT}
      * with an embedded value of {@code null}.
      *
      * @since 2.10
      */
     protected JsonToken _decodeUndefinedValue() {
-        if (Feature.HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT.enabledIn(_formatFeatures)) {
+        if (Feature.READ_UNDEFINED_AS_EMBEDDED_OBJECT.enabledIn(_formatFeatures)) {
             _binaryValue = null; // should be clear but just in case
             return JsonToken.VALUE_EMBEDDED_OBJECT;
         }
