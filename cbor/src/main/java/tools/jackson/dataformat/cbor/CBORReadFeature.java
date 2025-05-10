@@ -28,18 +28,17 @@ public enum CBORReadFeature implements FormatFeature
     DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING(false),
 
     /**
-     * Feature that determines how an ` undefined ` value (0xF7) is decoded.
+     * Feature that determines how an {@code undefined} value ({@code 0xF7}) is exposed
+     * by parser.
      * <p>
-     * When enabled, the parser returns {@link JsonToken#VALUE_EMBEDDED_OBJECT} with a
-     * value of {@code null}, allowing the caller to distinguish `undefined` from actual
+     * When enabled, the parser returns {@link JsonToken#VALUE_EMBEDDED_OBJECT} with
+     * a value of {@code null}, allowing the caller to distinguish {@code undefined} from actual
      * {@link JsonToken#VALUE_NULL}.
+     * When disabled {@code undefined} value is reported as {@link JsonToken#VALUE_NULL}.
      *<p>
-     * When disabled (default, for backwards compatibility), `undefined` value is
-     * reported as {@link JsonToken#VALUE_NULL}, maintaining legacy behavior from Jackson 2.10 to 2.19.
-     *
-     * @since 2.20
+     * The default value is {@code false} for backwards compatibility (with versions prior to 2.20).
      */
-    HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT(false)
+    READ_UNDEFINED_AS_EMBEDDED_OBJECT(false)
     ;
 
     private final boolean _defaultState;

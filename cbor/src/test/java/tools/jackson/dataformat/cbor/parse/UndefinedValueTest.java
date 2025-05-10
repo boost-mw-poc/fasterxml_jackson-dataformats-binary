@@ -35,7 +35,7 @@ public class UndefinedValueTest extends CBORTestBase
     @Test
     public void testUndefinedLiteralAsEmbeddedObject() throws Exception {
         CBORFactory f = CBORFactory.builder()
-                .enable(CBORReadFeature.HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT)
+                .enable(CBORReadFeature.READ_UNDEFINED_AS_EMBEDDED_OBJECT)
                 .build();
         CBORParser p = cborParser(f, new byte[] { BYTE_UNDEFINED });
 
@@ -65,7 +65,7 @@ public class UndefinedValueTest extends CBORTestBase
     @Test
     public void testUndefinedInArrayAsEmbeddedObject() throws Exception {
         CBORFactory f = CBORFactory.builder()
-                .enable(CBORReadFeature.HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT)
+                .enable(CBORReadFeature.READ_UNDEFINED_AS_EMBEDDED_OBJECT)
                 .build();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -111,7 +111,7 @@ public class UndefinedValueTest extends CBORTestBase
     @Test
     public void testUndefinedInObjectAsEmbeddedObject() throws Exception {
         CBORFactory f = CBORFactory.builder()
-                .enable(CBORReadFeature.HANDLE_UNDEFINED_AS_EMBEDDED_OBJECT)
+                .enable(CBORReadFeature.READ_UNDEFINED_AS_EMBEDDED_OBJECT)
                 .build();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -126,14 +126,14 @@ public class UndefinedValueTest extends CBORTestBase
         // assume we use end marker for Object, so
         doc[doc.length - 2] = BYTE_UNDEFINED;
 
-        CBORParser p = cborParser(f, doc);
-        assertEquals(JsonToken.START_OBJECT, p.nextToken());
-        assertEquals(JsonToken.PROPERTY_NAME, p.nextToken());
-        assertEquals("bar", p.currentName());
-        assertEquals(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
-        assertTrue(p.isUndefined());
-        assertEquals(JsonToken.END_OBJECT, p.nextToken());
-        assertNull(p.nextToken());
-        p.close();
+        try (CBORParser p = cborParser(f, doc)) {
+            assertEquals(JsonToken.START_OBJECT, p.nextToken());
+            assertEquals(JsonToken.PROPERTY_NAME, p.nextToken());
+            assertEquals("bar", p.currentName());
+            assertEquals(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+            assertTrue(p.isUndefined());
+            assertEquals(JsonToken.END_OBJECT, p.nextToken());
+            assertNull(p.nextToken());
+        }
     }
 }
