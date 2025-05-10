@@ -66,9 +66,10 @@ public class RecordVisitor
         } else if (subTypes != null && !subTypes.isEmpty()) {
             List<Schema> unionSchemas = new ArrayList<>();
             for (NamedType subType : subTypes) {
-                ValueSerializer<?> ser = getContext().findValueSerializer(subType.getType());
+                final JavaType subTypeType = getContext().getTypeFactory().constructType(subType.getType());
+                ValueSerializer<?> ser = getContext().findValueSerializer(subTypeType);
                 VisitorFormatWrapperImpl visitor = _visitorWrapper.createChildWrapper();
-                ser.acceptJsonFormatVisitor(visitor, getContext().getTypeFactory().constructType(subType.getType()));
+                ser.acceptJsonFormatVisitor(visitor, subTypeType);
                 unionSchemas.add(visitor.getAvroSchema());
             }
             _avroSchema = Schema.createUnion(unionSchemas);
