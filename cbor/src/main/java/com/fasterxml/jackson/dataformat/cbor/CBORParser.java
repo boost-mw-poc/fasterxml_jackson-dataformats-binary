@@ -848,7 +848,7 @@ public class CBORParser extends ParserMinimalBase
         _tokenInputTotal = _currInputProcessed + _inputPtr;
 
         // also: clear any data retained for previous token
-        clearRetainedValues();
+        _clearRetainedValues();
 
         // First: need to keep track of lengths of defined-length Arrays and
         // Objects (to materialize END_ARRAY/END_OBJECT as necessary);
@@ -1480,7 +1480,7 @@ public class CBORParser extends ParserMinimalBase
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
             // need to clear retained values for previous token
-            clearRetainedValues();
+            _clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1540,7 +1540,7 @@ public class CBORParser extends ParserMinimalBase
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
             // need to clear retained values for previous token
-            clearRetainedValues();
+            _clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -4140,7 +4140,7 @@ strLenBytes, firstUTFByteValue, truncatedCharOffset, bytesExpected));
     }
 
     // @since 2.20
-    private void clearRetainedValues() {
+    protected void _clearRetainedValues() {
         _numTypesValid = NR_UNKNOWN;
         _binaryValue = null;
         _simpleValue = null;
