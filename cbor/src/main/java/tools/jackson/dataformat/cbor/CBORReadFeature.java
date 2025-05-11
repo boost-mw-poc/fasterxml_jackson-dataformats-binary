@@ -38,7 +38,19 @@ public enum CBORReadFeature implements FormatFeature
      *<p>
      * The default value is {@code false} for backwards compatibility (with versions prior to 2.20).
      */
-    READ_UNDEFINED_AS_EMBEDDED_OBJECT(false)
+    READ_UNDEFINED_AS_EMBEDDED_OBJECT(false),
+
+    /**
+     * Feature that determines how a CBOR "simple value" of major type 7 is exposed by parser.
+     * <p>
+     * When enabled, the parser returns {@link JsonToken#VALUE_EMBEDDED_OBJECT} with
+     * an embedded value of type {@link CBORSimpleValue}, allowing the caller to distinguish
+     * these values from actual {@link JsonToken#VALUE_NUMBER_INT}s.
+     * When disabled, simple values are returned as {@link JsonToken#VALUE_NUMBER_INT}.
+     *<p>
+     * The default value is {@code false} for backwards compatibility (with versions prior to 2.20).
+     */
+    READ_SIMPLE_VALUE_AS_EMBEDDED_OBJECT(false)
     ;
 
     private final boolean _defaultState;

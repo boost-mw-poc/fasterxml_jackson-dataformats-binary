@@ -7,8 +7,7 @@ import tools.jackson.core.JsonParser.NumberType;
 import tools.jackson.core.JsonToken;
 import tools.jackson.core.exc.StreamReadException;
 
-import tools.jackson.dataformat.cbor.CBORConstants;
-import tools.jackson.dataformat.cbor.CBORTestBase;
+import tools.jackson.dataformat.cbor.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -32,6 +31,23 @@ public class SimpleValuesTest extends CBORTestBase
     }
 
     @Test
+    public void testTinySimpleValuesAsEmbeddedObjectWhenEnabled() throws Exception
+    {
+        CBORFactory f = CBORFactory.builder()
+                .enable(CBORReadFeature.READ_SIMPLE_VALUE_AS_EMBEDDED_OBJECT)
+                .build();
+        // Values 0..19 are unassigned, valid to encounter
+        for (int v = 0; v <= 19; ++v) {
+            byte[] doc = new byte[1];
+            doc[0] = (byte) (CBORConstants.PREFIX_TYPE_MISC + v);
+            try (CBORParser p = cborParser(f, doc)) {
+                assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+                assertEquals(new CBORSimpleValue(v), p.getEmbeddedObject());
+            }
+        }
+    }
+
+    @Test
     public void testValidByteLengthMinimalValues() throws Exception {
         // Values 32..255 are unassigned, valid to encounter
         for (int v = 32; v <= 255; ++v) {
@@ -41,6 +57,21 @@ public class SimpleValuesTest extends CBORTestBase
                 // exposes as `int`, fwtw
                 assertEquals(NumberType.INT, p.getNumberType());
                 assertEquals(v, p.getIntValue());
+            }
+        }
+    }
+
+    @Test
+    public void testValidByteLengthMinimalValuesAsEmbeddedObjectWhenEnabled() throws Exception {
+        // Values 32..255 are unassigned, valid to encounter
+        CBORFactory f = CBORFactory.builder()
+                .enable(CBORReadFeature.READ_SIMPLE_VALUE_AS_EMBEDDED_OBJECT)
+                .build();
+        for (int v = 32; v <= 255; ++v) {
+            byte[] doc = { (byte) (CBORConstants.PREFIX_TYPE_MISC + 24), (byte) v };
+            try (CBORParser p = cborParser(f, doc)) {
+                assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+                assertEquals(new CBORSimpleValue(v), p.getEmbeddedObject());
             }
         }
     }

@@ -160,6 +160,14 @@ public class CBORParser extends ParserBase
     protected TagList _tagValues = new TagList();
 
     /**
+     * When major type 7 value is encountered and exposed as {@link JsonToken#VALUE_EMBEDDED_OBJECT},
+     * the value will be stored here.
+     *
+     * @since 2.20
+     */
+    protected CBORSimpleValue _simpleValue;
+    
+    /**
      * Flag that indicates that the current token has not yet
      * been fully processed, and needs to be finished for
      * some access (or skipped to obtain the next token)
@@ -506,9 +514,9 @@ public class CBORParser extends ParserBase
             _skipIncomplete();
         }
         _tokenInputTotal = _currInputProcessed + _inputPtr;
-        // also: clear any data retained so far
-        _numTypesValid = NR_UNKNOWN;
-        _binaryValue = null;
+
+        // also: clear any data retained for previous token
+        clearRetainedValues();
 
         // First: need to keep track of lengths of defined-length Arrays and
         // Objects (to materialize END_ARRAY/END_OBJECT as necessary);
@@ -1135,12 +1143,12 @@ public class CBORParser extends ParserBase
     {
         // Two parsing modes; can only succeed if expecting field name, so handle that first:
         if (_streamReadContext.inObject() && _currToken != JsonToken.PROPERTY_NAME) {
-            _numTypesValid = NR_UNKNOWN;
             if (_tokenIncomplete) {
                 _skipIncomplete();
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
-            _binaryValue = null;
+            // need to clear retained values for previous token
+            clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1195,12 +1203,12 @@ public class CBORParser extends ParserBase
     public String nextName() throws JacksonException
     {
         if (_streamReadContext.inObject() && _currToken != JsonToken.PROPERTY_NAME) {
-            _numTypesValid = NR_UNKNOWN;
             if (_tokenIncomplete) {
                 _skipIncomplete();
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
-            _binaryValue = null;
+            // need to clear retained values for previous token
+            clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1362,9 +1370,8 @@ public class CBORParser extends ParserBase
         if (_tokenIncomplete) {
             _skipIncomplete();
         }
-        _numTypesValid = NR_UNKNOWN;
         _tokenInputTotal = _currInputProcessed + _inputPtr;
-        _binaryValue = null;
+        clearRetainedValues();
         _tagValues.clear();
         _sharedString = null;
         // completed the whole Object?
@@ -1859,7 +1866,10 @@ public class CBORParser extends ParserBase
         if (_tokenIncomplete) {
             _finishToken();
         }
-        if (_currToken == JsonToken.VALUE_EMBEDDED_OBJECT ) {
+        if (_currToken == JsonToken.VALUE_EMBEDDED_OBJECT) {
+            if (_simpleValue != null) {
+                return _simpleValue;
+            }
             return _binaryValue;
         }
         return null;
@@ -3690,36 +3700,48 @@ expType, type, ch));
      * Helper method that deals with details of decoding unallocated "simple values"
      * and exposing them as expected token.
      * <p>
-     * As of Jackson 2.12, simple values are exposed as
-     * {@link JsonToken#VALUE_NUMBER_INT}s,
-     * but in later versions this is planned to be changed to separate value type.
+     * Starting with Jackson 2.20, this behavior can be changed by enabling the
+     * {@link CBORReadFeature#READ_SIMPLE_VALUE_AS_EMBEDDED_OBJECT}
+     * feature, in which case simple values are returned as {@link JsonToken#VALUE_EMBEDDED_OBJECT} with an
+     * embedded {@link CBORSimpleValue} instance.
      */
     public JsonToken _decodeSimpleValue(int lowBits, int ch) throws JacksonException {
         if (lowBits > 24) {
             _invalidToken(ch);
         }
+        final boolean simpleAsEmbedded = CBORReadFeature.READ_SIMPLE_VALUE_AS_EMBEDDED_OBJECT.enabledIn(_formatFeatures);
         if (lowBits < 24) {
-            _numberInt = lowBits;
+            if (simpleAsEmbedded) {
+                _simpleValue = new CBORSimpleValue(lowBits);
+            } else {
+                _numberInt = lowBits;
+            }
         } else { // need another byte
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
             }
-            _numberInt = _inputBuffer[_inputPtr++] & 0xFF;
+
             // As per CBOR spec, values below 32 not allowed to avoid
             // confusion (as well as guarantee uniqueness of encoding)
-            if (_numberInt < 32) {
+            int value = _inputBuffer[_inputPtr++] & 0xFF;
+            if (value < 32) {
                 throw _constructReadException("Invalid second byte for simple value: 0x"
-                        +Integer.toHexString(_numberInt)+" (only values 0x20 - 0xFF allowed)");
+                        +Integer.toHexString(value)+" (only values 0x20 - 0xFF allowed)");
+            }
+
+            if (simpleAsEmbedded) {
+                _simpleValue = new CBORSimpleValue(value);
+            } else {
+                _numberInt = value;
             }
         }
 
-        // 25-Nov-2020, tatu: Although ideally we should report these
-        //    as `JsonToken.VALUE_EMBEDDED_OBJECT`, due to late addition
-        //    of handling in 2.12, simple value in 2.12 will be reported
-        //    as simple ints.
+        if (simpleAsEmbedded) {
+            return JsonToken.VALUE_EMBEDDED_OBJECT;
+        }
 
         _numTypesValid = NR_INT;
-        return (JsonToken.VALUE_NUMBER_INT);
+        return JsonToken.VALUE_NUMBER_INT;
     }
 
     /*
@@ -4079,5 +4101,12 @@ strLenBytes, firstUTFByteValue, truncatedCharOffset, bytesExpected));
     private void createChildObjectContext(final int len) throws JacksonException {
         _streamReadContext = _streamReadContext.createChildObjectContext(len);
         _streamReadConstraints.validateNestingDepth(_streamReadContext.getNestingDepth());
+    }
+
+    // @since 2.20
+    private void clearRetainedValues() {
+        _numTypesValid = NR_UNKNOWN;
+        _binaryValue = null;
+        _simpleValue = null;
     }
 }
