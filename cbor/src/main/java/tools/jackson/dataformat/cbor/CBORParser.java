@@ -516,7 +516,7 @@ public class CBORParser extends ParserBase
         _tokenInputTotal = _currInputProcessed + _inputPtr;
 
         // also: clear any data retained for previous token
-        clearRetainedValues();
+        _clearRetainedValues();
 
         // First: need to keep track of lengths of defined-length Arrays and
         // Objects (to materialize END_ARRAY/END_OBJECT as necessary);
@@ -1148,7 +1148,7 @@ public class CBORParser extends ParserBase
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
             // need to clear retained values for previous token
-            clearRetainedValues();
+            _clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1208,7 +1208,7 @@ public class CBORParser extends ParserBase
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
             // need to clear retained values for previous token
-            clearRetainedValues();
+            _clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1309,12 +1309,11 @@ public class CBORParser extends ParserBase
     {
         // Two parsing modes; can only succeed if expecting field name, so handle that first:
         if (_streamReadContext.inObject() && _currToken != JsonToken.PROPERTY_NAME) {
-            _numTypesValid = NR_UNKNOWN;
             if (_tokenIncomplete) {
                 _skipIncomplete();
             }
             _tokenInputTotal = _currInputProcessed + _inputPtr;
-            _binaryValue = null;
+            _clearRetainedValues();
             _tagValues.clear();
             // completed the whole Object?
             if (!_streamReadContext.expectMoreValues()) {
@@ -1371,7 +1370,7 @@ public class CBORParser extends ParserBase
             _skipIncomplete();
         }
         _tokenInputTotal = _currInputProcessed + _inputPtr;
-        clearRetainedValues();
+        _clearRetainedValues();
         _tagValues.clear();
         _sharedString = null;
         // completed the whole Object?
@@ -4011,9 +4010,9 @@ expType, type, ch));
     }
 
     /*
-    /**********************************************************
+    /**********************************************************************
     /* Internal methods, error handling, reporting
-    /**********************************************************
+    /**********************************************************************
      */
 
     protected void _invalidToken(int ch) throws StreamReadException {
@@ -4082,29 +4081,29 @@ strLenBytes, firstUTFByteValue, truncatedCharOffset, bytesExpected));
 
     private final static BigInteger BIT_63 = BigInteger.ONE.shiftLeft(63);
 
-    private final BigInteger _bigPositive(long l) {
+    protected final BigInteger _bigPositive(long l) {
         BigInteger biggie = BigInteger.valueOf((l << 1) >>> 1);
         return biggie.or(BIT_63);
     }
 
-    private final BigInteger _bigNegative(long l) {
+    protected final BigInteger _bigNegative(long l) {
         // 03-Dec-2017, tatu: [dataformats-binary#124] Careful with overflow
         BigInteger unsignedBase = _bigPositive(l);
         return unsignedBase.negate().subtract(BigInteger.ONE);
     }
 
-    private void createChildArrayContext(final int len) throws JacksonException {
+    protected void createChildArrayContext(final int len) throws JacksonException {
         _streamReadContext = _streamReadContext.createChildArrayContext(len);
         _streamReadConstraints.validateNestingDepth(_streamReadContext.getNestingDepth());
     }
 
-    private void createChildObjectContext(final int len) throws JacksonException {
+    protected void createChildObjectContext(final int len) throws JacksonException {
         _streamReadContext = _streamReadContext.createChildObjectContext(len);
         _streamReadConstraints.validateNestingDepth(_streamReadContext.getNestingDepth());
     }
 
     // @since 2.20
-    private void clearRetainedValues() {
+    protected void _clearRetainedValues() {
         _numTypesValid = NR_UNKNOWN;
         _binaryValue = null;
         _simpleValue = null;
