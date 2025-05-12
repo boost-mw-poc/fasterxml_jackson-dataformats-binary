@@ -87,7 +87,7 @@ public class CBORFactory
         super(StreamReadConstraints.defaults(),
                 StreamWriteConstraints.defaults(),
                 ErrorReportConfiguration.defaults(),
-                0,
+                DEFAULT_CBOR_PARSER_FEATURE_FLAGS,
                 DEFAULT_CBOR_GENERATOR_FEATURE_FLAGS);
     }
 
@@ -192,9 +192,16 @@ public class CBORFactory
     }
 
     /**
-     * Check whether specified generator feature is enabled.
+     * Check whether specified CBOR-specific stream read feature is enabled.
      */
-    public final boolean isEnabled(CBORWriteFeature f) {
+    public boolean isEnabled(CBORReadFeature f) {
+        return f.enabledIn(_formatReadFeatures);
+    }
+
+    /**
+     * Check whether specified CBOR-specific stream write feature is enabled.
+     */
+    public boolean isEnabled(CBORWriteFeature f) {
         return f.enabledIn(_formatWriteFeatures);
     }
 
