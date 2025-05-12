@@ -179,12 +179,10 @@ public class CBORFactory
         return false; // no (mandatory) FormatSchema for cbor
     }
 
-    // No Reader features yet for CBOR
-    /*@Override
+    @Override
     public Class<CBORReadFeature> getFormatReadFeatureType() {
         return CBORReadFeature.class;
     }
-    */
 
     @Override
     public Class<CBORWriteFeature> getFormatWriteFeatureType() {
