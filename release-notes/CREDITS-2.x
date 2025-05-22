@@ -232,6 +232,9 @@ Michal Foksa (MichalFoksa@github)
  (2.19.0)
 * Contributed #536: (avro) Add Logical Type support for `java.util.UUID`
  (2.19.0)
+* Contributed fix for #589: AvroSchema: Does not include base class for records
+  with subclasses
+ (2.19.1)
 
 Hunter Herman (hherman1@github)
 
@@ -386,6 +389,11 @@ Josh Curry (@seadbrane)
  * Reported, contributed fix for #571: Unable to deserialize a pojo with IonStruct
   (2.19.0)
 
+Rafael Winterhalter (@raphw)
+ * Reported #589: AvroSchema: Does not include base class for records
+   with subclasses
+  (2.19.1)
+
 Brian Gruber (@bgruber)
  * Reported #431: (cbor) Negative `BigInteger` values not encoded/decoded correctly
   (2.20.0)
@@ -400,4 +408,3 @@ Fawzi Essam (@iifawzi)
  * Contributed implementation of #587: (cbor) Allow exposing CBOR Simple values as
    `JsonToken.VALUE_EMBEDDED_OBJECT` with a feature flag
   (2.20.0)
-
