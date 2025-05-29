@@ -2252,16 +2252,16 @@ _typeAsInt);
     @Override
     protected void _parseNumericValue() throws JacksonException
     {
-        if (!_tokenIncomplete) {
-            throw _constructReadException("Internal error: number token (%s) decoded, no value set", _currToken);
+        if (_tokenIncomplete) {
+            _tokenIncomplete = false;
+            int tb = _typeAsInt;
+    	        // ensure we got a numeric type with value that is lazily parsed
+            if ((tb >> 5) == 1) {
+                _finishNumberToken(tb);
+                return;
+            }
         }
-        _tokenIncomplete = false;
-        int tb = _typeAsInt;
-	        // ensure we got a numeric type with value that is lazily parsed
-        if ((tb >> 5) != 1) {
-            throw _constructReadException("Current token (%s) not numeric, can not use numeric value accessors", _currToken);
-        }
-        _finishNumberToken(tb);
+        throw _constructReadException("Current token (%s) not numeric, cannot use numeric value accessors", _currToken);
     }
 
     /*
