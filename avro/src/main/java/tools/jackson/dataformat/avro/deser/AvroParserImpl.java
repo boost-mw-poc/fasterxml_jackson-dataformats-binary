@@ -210,8 +210,9 @@ public abstract class AvroParserImpl
     public final Number getNumberValue() throws JacksonException
     {
         if (_numTypesValid == NR_UNKNOWN) {
-            _checkNumericValue(NR_UNKNOWN); // will also check event type
+            _checkNumericValue(); // will also check event type
         }
+
         // Separate types for int types
         if (_currToken == JsonToken.VALUE_NUMBER_INT) {
             if ((_numTypesValid & NR_INT) != 0) {
@@ -249,9 +250,6 @@ public abstract class AvroParserImpl
     @Override
     public final NumberType getNumberType() throws JacksonException
     {
-        if (_numTypesValid == NR_UNKNOWN) {
-            _checkNumericValue(NR_UNKNOWN); // will also check event type
-        }
         if (_currToken == JsonToken.VALUE_NUMBER_INT) {
             if ((_numTypesValid & NR_INT) != 0) {
                 return NumberType.INT;
@@ -265,13 +263,17 @@ public abstract class AvroParserImpl
         // And then floating point types. Here optimal type should be big decimal,
         // to avoid losing any data? However... using BD is slow, so let's allow returning
         // double as type if no explicit call has been made to access data as BD?
-        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            return NumberType.BIG_DECIMAL;
+        if (_currToken == JsonToken.VALUE_NUMBER_FLOAT) {
+            if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
+                return NumberType.BIG_DECIMAL;
+            }
+            if ((_numTypesValid & NR_DOUBLE) != 0) {
+                return NumberType.DOUBLE;
+            }
+            return NumberType.FLOAT;
         }
-        if ((_numTypesValid & NR_DOUBLE) != 0) {
-            return NumberType.DOUBLE;
-        }
-        return NumberType.FLOAT;
+
+        return null;
     }
 
     @Override // since 2.17
@@ -295,7 +297,7 @@ public abstract class AvroParserImpl
     {
         if ((_numTypesValid & NR_FLOAT) == 0) {
             if (_numTypesValid == NR_UNKNOWN) {
-                _checkNumericValue(NR_FLOAT);
+                _checkNumericValue();
             }
             if ((_numTypesValid & NR_FLOAT) == 0) {
                 convertNumberToFloat();
@@ -316,13 +318,12 @@ public abstract class AvroParserImpl
     /**********************************************************************
      */
 
-    protected final void _checkNumericValue(int expType) throws JacksonException
+    protected final void _checkNumericValue() throws JacksonException
     {
         // Int or float?
-        if (_currToken == JsonToken.VALUE_NUMBER_INT || _currToken == JsonToken.VALUE_NUMBER_FLOAT) {
-            return;
+        if (_currToken != JsonToken.VALUE_NUMBER_INT && _currToken != JsonToken.VALUE_NUMBER_FLOAT) {
+            throw _constructReadException("Current token (%s) not numeric, cannot use numeric value accessors", _currToken);
         }
-        _reportError("Current token ("+currentToken()+") not numeric, can not use numeric value accessors");
     }
 
     @Override
@@ -333,7 +334,7 @@ public abstract class AvroParserImpl
             // Let's verify it's lossless conversion by simple roundtrip
             int result = (int) _numberLong;
             if (((long) result) != _numberLong) {
-                _reportError("Numeric value ("+getString()+") out of range of int");
+                _reportError("Numeric value ("+getString()+") out of range of `int`");
             }
             _numberInt = result;
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
