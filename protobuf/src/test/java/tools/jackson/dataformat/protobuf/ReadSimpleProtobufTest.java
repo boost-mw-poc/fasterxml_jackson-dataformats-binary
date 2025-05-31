@@ -98,8 +98,11 @@ public class ReadSimpleProtobufTest extends ProtobufTestBase
         JsonParser p = MAPPER.reader()
                 .with(schema)
                 .createParser(bytes);
+
+        _verifyGetNumberTypeFail(p, "null");
         assertToken(JsonToken.START_OBJECT, p.nextToken());
         assertNull(p.currentName());
+        _verifyGetNumberTypeFail(p, "START_OBJECT");
         assertToken(JsonToken.PROPERTY_NAME, p.nextToken());
         assertEquals("x", p.currentName());
         assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
@@ -114,8 +117,10 @@ public class ReadSimpleProtobufTest extends ProtobufTestBase
         assertEquals(input.y, p.getIntValue());
         assertToken(JsonToken.END_OBJECT, p.nextToken());
         assertNull(p.currentName());
+        _verifyGetNumberTypeFail(p, "END_OBJECT");
         p.close();
         assertNull(p.currentName());
+        _verifyGetNumberTypeFail(p, "null");
     }
 
     @Test
@@ -281,7 +286,7 @@ public class ReadSimpleProtobufTest extends ProtobufTestBase
         assertEquals("values", p.currentName());
 
         // 23-May-2016, tatu: Not working properly yet:
-//        assertEquals("{values}", p.getParsingContext().toString());
+//        assertEquals("{values}", p.streamReadContext().toString());
 
         assertToken(JsonToken.START_ARRAY, p.nextToken());
 
@@ -475,5 +480,11 @@ public class ReadSimpleProtobufTest extends ProtobufTestBase
             assertTrue(message.startsWith("String value length (4) exceeds the maximum allowed"),
                     "unexpected message: " + message);
         }
+    }
+
+    private void _verifyGetNumberTypeFail(JsonParser p, String token) throws Exception
+    {
+        // In 2.x got exception; in 3.x null
+        assertNull(p.getNumberType());
     }
 }

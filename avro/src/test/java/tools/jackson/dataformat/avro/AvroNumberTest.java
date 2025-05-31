@@ -72,7 +72,10 @@ public class AvroNumberTest extends AvroTestBase
         JsonParser p = MAPPER.reader()
                 .with(schema)
                 .createParser(LimitingInputStream.wrap(bytes, 42));
+
+        _verifyGetNumberTypeFail(p, "null");
         assertToken(JsonToken.START_OBJECT, p.nextToken());
+        _verifyGetNumberTypeFail(p, "START_OBJECT");
 
         assertTrue(p.nextName(new SerializedString("i")));
         assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
@@ -124,6 +127,15 @@ public class AvroNumberTest extends AvroTestBase
         assertEquals(Double.valueOf(input.d), p.getNumberValue());
 
         assertToken(JsonToken.END_OBJECT, p.nextToken());
+        _verifyGetNumberTypeFail(p, "END_OBJECT");
         p.close();
+
+        _verifyGetNumberTypeFail(p, "null");
+    }
+
+    private void _verifyGetNumberTypeFail(JsonParser p, String token) throws Exception
+    {
+        // In 2.x got exception; in 3.x null
+        assertNull(p.getNumberType());
     }
 }

@@ -25,6 +25,7 @@ Active maintainers:
 #587: (cbor) Allow exposing CBOR Simple values as `JsonToken.VALUE_EMBEDDED_OBJECT`
   with a feature flag
  (implementation contributed by Fawzi E)   
+- Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
 2.19.1 (not yet released)
