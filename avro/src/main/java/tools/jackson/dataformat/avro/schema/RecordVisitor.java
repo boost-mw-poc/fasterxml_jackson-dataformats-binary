@@ -67,11 +67,9 @@ public class RecordVisitor
      */
     private final Schema _typeSchema;
 
-    // !!! 19-May-2025: TODO: make final in 2.20
-    protected Schema _avroSchema;
+    protected final Schema _avroSchema;
 
-    // !!! 19-May-2025: TODO: make final in 2.20
-    protected List<Schema.Field> _fields = new ArrayList<>();
+    protected final List<Schema.Field> _fields = new ArrayList<>();
 
     public RecordVisitor(SerializationContext ctxt, JavaType type,
             VisitorFormatWrapperImpl visitorWrapper)
@@ -100,12 +98,11 @@ public class RecordVisitor
             _typeSchema = null;
         } else {
             // If Avro schema for this _type results in UNION I want to know Avro type where to assign fields
-            _avroSchema = AvroSchemaHelper.initializeRecordSchema(ctxt.getConfig(), _type, annotations);
-            _typeSchema = _avroSchema;
+            _typeSchema = AvroSchemaHelper.initializeRecordSchema(ctxt.getConfig(), _type, annotations);
             _overridden = false;
             AvroMeta meta = annotations.getAnnotation(AvroMeta.class);
             if (meta != null) {
-                _avroSchema.addProp(meta.key(), meta.value());
+                _typeSchema.addProp(meta.key(), meta.value());
             }
 
             List<NamedType> subTypes = intr.findSubtypes(config, annotations);
@@ -144,6 +141,8 @@ public class RecordVisitor
                     }
                 }
                 _avroSchema = Schema.createUnion(new ArrayList<>(unionSchemas));
+            } else {
+                _avroSchema = _typeSchema;
             }
         }
         _visitorWrapper.getSchemas().addSchema(type, _avroSchema);

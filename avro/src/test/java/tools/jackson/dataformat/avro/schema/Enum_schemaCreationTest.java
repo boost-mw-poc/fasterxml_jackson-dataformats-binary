@@ -26,8 +26,6 @@ public class Enum_schemaCreationTest extends AvroTestBase
         MAPPER.acceptJsonFormatVisitor(NumbersEnum.class , gen);
         Schema actualSchema = gen.getGeneratedSchema().getAvroSchema();
 
-        //System.out.println("schema:\n" + actualSchema.toString(true));
-
         // THEN
         assertThat(actualSchema.getType()).isEqualTo( Schema.Type.ENUM);
         assertThat(actualSchema.getEnumSymbols()).containsExactlyInAnyOrder("ONE", "TWO", "THREE");
@@ -42,8 +40,6 @@ public class Enum_schemaCreationTest extends AvroTestBase
         // WHEN
         MAPPER.acceptJsonFormatVisitor(NumbersEnum.class , gen);
         Schema actualSchema = gen.getGeneratedSchema().getAvroSchema();
-
-        //System.out.println("schema:\n" + actualSchema.toString(true));
 
         // THEN
         assertThat(actualSchema.getType()).isEqualTo( Schema.Type.STRING);

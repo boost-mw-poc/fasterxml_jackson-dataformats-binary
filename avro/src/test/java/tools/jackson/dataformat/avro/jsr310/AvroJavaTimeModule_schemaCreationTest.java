@@ -46,8 +46,6 @@ public class AvroJavaTimeModule_schemaCreationTest {
         mapper.acceptJsonFormatVisitor(testClass, gen);
         Schema actualSchema = gen.getGeneratedSchema().getAvroSchema();
 
-//        System.out.println(testClass.getName() + " schema:\n" + actualSchema.toString(true));
-
         // THEN
         assertThat(actualSchema.getType()).isEqualTo(expectedType);
         assertThat(actualSchema.getProp(LogicalType.LOGICAL_TYPE_PROP)).isEqualTo(expectedLogicalType);
