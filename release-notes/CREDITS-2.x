@@ -408,3 +408,7 @@ Fawzi Essam (@iifawzi)
  * Contributed implementation of #587: (cbor) Allow exposing CBOR Simple values as
    `JsonToken.VALUE_EMBEDDED_OBJECT` with a feature flag
   (2.20.0)
+
+Oleg Koretsky (@Radiokot)
+ * Contributed #603 (cbor) Add support for writing unsigned numbers to CBOR
+  (2.20.0)

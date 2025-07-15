@@ -938,6 +938,21 @@ public class CBORGenerator extends GeneratorBase
         return this;
     }
 
+    /**
+     * Method for outputting given value as an unsigned integer.
+     * Can be called in any context where a value is expected
+     * (Array value, Object field value, root-level value).
+     *
+     * @param i Number value to write
+     * @throws IOException if there is either an underlying I/O problem or encoding
+     *                     issue at format layer
+     * @since 2.20
+     */
+    public void writeNumberUnsigned(int i) throws IOException {
+        _verifyValueWrite("write number unsigned");
+        _writeIntMinimal(PREFIX_TYPE_INT_POS, i);
+    }
+
     @Override
     public JsonGenerator writeNumber(short v) throws JacksonException {
         // !!! TODO 25-May-2020, tatu: Should we try to check for more optimal form?
@@ -984,6 +999,34 @@ public class CBORGenerator extends GeneratorBase
         _outputBuffer[_outputTail++] = (byte) i;
         _outputBuffer[_outputTail++] = b0;
         return this;
+    }
+
+    /**
+     * Method for outputting given value as an unsigned integer.
+     * Can be called in any context where a value is expected
+     * (Array value, Object field value, root-level value).
+     *
+     * @param l Number value to write
+     * @throws IOException if there is either an underlying I/O problem or encoding
+     *                     issue at format layer
+     * @since 2.20
+     */
+    public void writeNumberUnsigned(long l) throws IOException {
+        if (_cfgMinimalInts && l >= 0 && l < 0x100000000L) {
+            writeNumberUnsigned((int) l);
+            return;
+        }
+        _verifyValueWrite("write number unsigned");
+        _ensureRoomForOutput(9);
+        _outputBuffer[_outputTail++] = (byte) (PREFIX_TYPE_INT_POS + SUFFIX_UINT64_ELEMENTS);
+        _outputBuffer[_outputTail++] = (byte) (l >> 56);
+        _outputBuffer[_outputTail++] = (byte) (l >> 48);
+        _outputBuffer[_outputTail++] = (byte) (l >> 40);
+        _outputBuffer[_outputTail++] = (byte) (l >> 32);
+        _outputBuffer[_outputTail++] = (byte) (l >> 24);
+        _outputBuffer[_outputTail++] = (byte) (l >> 16);
+        _outputBuffer[_outputTail++] = (byte) (l >> 8);
+        _outputBuffer[_outputTail++] = (byte) l;
     }
 
     @Override

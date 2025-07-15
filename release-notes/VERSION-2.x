@@ -25,6 +25,10 @@ Active maintainers:
 #587: (cbor) Allow exposing CBOR Simple values as `JsonToken.VALUE_EMBEDDED_OBJECT`
   with a feature flag
  (implementation contributed by Fawzi E)   
+#600: (avro) Make RecordVisitor _avroSchema and _fields properties final
+ (contributed by Michal F)
+#603 (cbor) Add support for writing unsigned numbers to CBOR
+ (contributed by Oleg K)
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
