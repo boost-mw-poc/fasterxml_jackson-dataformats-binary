@@ -16,7 +16,11 @@ Active maintainers:
 
 2.20.0 (not yet released)
 
--
+No changes since 2.19
+
+2.19.2 (18-Jul-2025)
+
+No changes since 2.19.1
 
 2.19.1 (13-Jun-2025)
 
