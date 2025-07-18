@@ -32,6 +32,10 @@ Active maintainers:
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
+2.19.2 (18-Jul-2025)
+
+No changes since 2.19.1
+
 2.19.1 (13-Jun-2025)
 
 #589: AvroSchema: Does not include base class for records with subclasses
