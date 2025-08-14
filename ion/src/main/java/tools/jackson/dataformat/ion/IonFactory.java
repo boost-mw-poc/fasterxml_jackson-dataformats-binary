@@ -267,6 +267,7 @@ public class IonFactory
                 _decorate(ioCtxt, in));
     }
 
+    @Deprecated // since 2.20
     @Override
     public JsonParser createParser(ObjectReadContext readCtxt, URL url) {
         // true, since we create InputStream from URL
