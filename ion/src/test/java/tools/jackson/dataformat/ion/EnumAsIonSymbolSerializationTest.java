@@ -20,7 +20,6 @@ import com.amazon.ion.system.IonSystemBuilder;
 
 import org.junit.jupiter.api.Test;
 
-import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.EnumFeature;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

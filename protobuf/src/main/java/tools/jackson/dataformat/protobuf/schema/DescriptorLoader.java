@@ -68,7 +68,12 @@ public class DescriptorLoader
 
     public FileDescriptorSet load(URL src) throws IOException
     {
-        return _reader.readValue(Objects.requireNonNull(src));
+        Objects.requireNonNull(src);
+        // 19-Aug-2025, tatu: databind no longer supports URL-based loading,
+        //   should use InputStream instead. But...
+        try (InputStream in = src.openStream()) {
+            return _reader.readValue(in);
+        }
     }
 
     public FileDescriptorSet load(File src) throws IOException

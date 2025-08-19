@@ -1,6 +1,6 @@
 package tools.jackson.dataformat.ion.misc;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,15 +21,28 @@ public class UncaughtExceptionsTest
     @Test
     public void testUncaughtException302() throws Exception
     {
-        URL poc = getClass().getResource("/data/issue-302.ion");
-        try {
-            MAPPER.readTree(poc);
+        try (InputStream in = getClass().getResourceAsStream("/data/issue-302.ion")) {
+            MAPPER.readTree(in);
             fail("Should not pass with invalid content");
         } catch (StreamReadException e) {
             verifyException(e, "Invalid embedded TIMESTAMP");
         }
     }
 
+    // [dataformats-binary#303]
+    @Test
+    public void testUncaughtException303() throws Exception
+    {
+        try (InputStream in = getClass().getResourceAsStream("/data/issue-303.ion")) {
+            MAPPER.readTree(in);
+            fail("Should not pass with invalid content");
+        } catch (StreamReadException e) {
+            // 19-Dec-2023, tatu: Looks like message depends on ion-java version,
+            //     cannot easily verify
+            // verifyException(e, "Value exceeds the length of its parent container");
+        }
+    }
+    
     void verifyException(Throwable e, String match)
     {
         String msg = e.getMessage();
