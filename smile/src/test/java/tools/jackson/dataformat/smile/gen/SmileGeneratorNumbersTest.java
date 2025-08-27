@@ -211,7 +211,7 @@ public class SmileGeneratorNumbersTest
         assertEquals(0x41ef9ba6, Float.floatToIntBits(f32));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (SmileGenerator gen = smileGenerator(out, false)) {
+        try (SmileGenerator gen = _smileGenerator(out, false)) {
             gen.writeNumber(f32);
         }
         byte[] encoded = out.toByteArray();
@@ -232,7 +232,7 @@ public class SmileGeneratorNumbersTest
         assertEquals(0xc03df374bc6a7efaL, Double.doubleToLongBits(d64));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (SmileGenerator gen = smileGenerator(out, false)) {
+        try (SmileGenerator gen = _smileGenerator(out, false)) {
             gen.writeNumber(d64);
         }
         byte[] encoded = out.toByteArray();

@@ -271,10 +271,10 @@ public class SmileNumberParsingTest
     public void testFloat32FromSpecEncoding() throws Exception {
         final float f32 = 29.9510f;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (SmileGenerator gen = smileGenerator(out, false)) {
+        try (SmileGenerator gen = _smileGenerator(out, false)) {
             gen.writeNumber(f32);
         }
-        try (SmileParser p = _smileParser(out.toByteArray())) {
+        try (JsonParser p = _smileParser(out.toByteArray())) {
             assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
             assertEquals(JsonParser.NumberType.FLOAT, p.getNumberType());
             assertEquals(f32, p.getFloatValue());
@@ -287,10 +287,10 @@ public class SmileNumberParsingTest
     public void testDouble64FromSpecEncoding() throws Exception {
         final double d64 = -29.9510;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (SmileGenerator gen = smileGenerator(out, false)) {
+        try (SmileGenerator gen = _smileGenerator(out, false)) {
             gen.writeNumber(d64);
         }
-        try (SmileParser p = _smileParser(out.toByteArray())) {
+        try (JsonParser p = _smileParser(out.toByteArray())) {
             assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
             assertEquals(JsonParser.NumberType.DOUBLE, p.getNumberType());
             assertEquals(d64, p.getDoubleValue());
