@@ -14,7 +14,7 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
-2.20.0-rc1 (04-Aug-2025)
+2.20.0 (28-Aug-2025)
 
 #137: (cbor) Allow exposing CBOR "undefined" value as `JsonToken.VALUE_EMBEDDED_OBJECT`;
   with embedded value of `null`
