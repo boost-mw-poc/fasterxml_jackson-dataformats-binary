@@ -393,6 +393,9 @@ Rafael Winterhalter (@raphw)
  * Reported #589: AvroSchema: Does not include base class for records
    with subclasses
   (2.19.1)
+ * Reported #601: Jackson subtype Avro schema unions are non-deterministic and
+   therefore incompatible with each other
+  (2.20.1)
 
 Brian Gruber (@bgruber)
  * Reported #431: (cbor) Negative `BigInteger` values not encoded/decoded correctly
@@ -412,3 +415,8 @@ Fawzi Essam (@iifawzi)
 Oleg Koretsky (@Radiokot)
  * Contributed #603 (cbor) Add support for writing unsigned numbers to CBOR
   (2.20.0)
+
+Vincent Eigenberger (@beseder1)
+ * Contributed fix for #601: Jackson subtype Avro schema unions are non-deterministic
+   and therefore incompatible with each other
+  (2.20.1)
