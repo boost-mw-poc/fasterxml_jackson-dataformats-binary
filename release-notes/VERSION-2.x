@@ -18,6 +18,13 @@ Active maintainers:
 
 No changes since 2.20
 
+2.20.1 (not yet released)
+
+#601: Jackson subtype Avro schema unions are non-deterministic and therefore
+  incompatible with each other
+ (reported by Raphael W)
+ (fix by Vincent E)
+
 2.20.0 (28-Aug-2025)
 
 #137: (cbor) Allow exposing CBOR "undefined" value as `JsonToken.VALUE_EMBEDDED_OBJECT`;
@@ -35,6 +42,13 @@ No changes since 2.20
  (contributed by Oleg K)
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
+
+2.19.3 (not yet released)
+
+#601: Jackson subtype Avro schema unions are non-deterministic and therefore
+  incompatible with each other
+ (reported by Raphael W)
+ (fix by Vincent E)
 
 2.19.2 (18-Jul-2025)
 
