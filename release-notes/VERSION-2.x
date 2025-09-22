@@ -39,6 +39,13 @@ Active maintainers:
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
+2.19.3 (not yet released)
+
+#601: Jackson subtype Avro schema unions are non-deterministic and therefore
+  incompatible with each other
+ (reported by Raphael W)
+ (fix by Vincent E)
+
 2.19.2 (18-Jul-2025)
 
 No changes since 2.19.1
