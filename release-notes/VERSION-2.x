@@ -24,6 +24,8 @@ No changes since 2.19
   incompatible with each other
  (reported by Raphael W)
  (fix by Vincent E)
+#616: CBOR text gets truncated on decoding
+ (reported, fix contributed by Manuel S)
 
 2.19.2 (18-Jul-2025)
 
