@@ -14,29 +14,7 @@ implementations)
 === Releases ===
 ------------------------------------------------------------------------
 
-3.0.0-rc10 (19-Sep-2025)
-3.0.0-rc9 (05-Sep-2025)
-3.0.0-rc8 (13-Aug-2025)
-3.0.0-rc7 (08-Aug-2025)
-3.0.0-rc6 (18-Jul-2025)
-
-No changes since rc5
-
-3.0.0-rc5 (22-May-2025)
-
-#582: Change defaults for `CBORReadFeature.DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING`
-  and `CBORWriteFeature.ENCODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING` to `true` (enabled)
- (contributed by by Fawzi E)
-#591: Change `CBOR` Features defaults for 3.0
- (contributed by by Fawzi E)
-
-3.0.0-rc4 (10-May-2025)
-3.0.0-rc3 (13-Apr-2025)
-3.0.0-rc2 (28-Mar-2025)
-
-No changes since rc1.
-
-3.0.0-rc1 (07-Mar-2025)
+3.0.0 (03-Oct-2025)
 
 #145: (avro) Add `AvroGenerator.Feature.ADD_NULL_AS_DEFAULT_VALUE_IN_SCHEMA` for
   adding default `null` in generated schema
@@ -53,7 +31,12 @@ No changes since rc1.
   by default (3.0)
 #557: Change 3.0 to use `module-info.java` directly [JSTEP-11]
 #559 (cbor, smile) Move `CBORMapper` and `SmileMapper` into main-level
-  Java package from under `MAIN.databind`
+  Java package from under `MAIN.databind`-
+#582: Change defaults for `CBORReadFeature.DECODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING`
+  and `CBORWriteFeature.ENCODE_USING_STANDARD_NEGATIVE_BIGINT_ENCODING` to `true` (enabled)
+ (contributed by by Fawzi E)
+#591: Change `CBOR` Features defaults for 3.0
+ (contributed by by Fawzi E)
 - Minimum Java baseline: Java 17
 - (protobuf) Remove shading of `protoparser` dependency (and change
   Maven packaging type to "jar" from "bundle")
