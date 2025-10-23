@@ -14,6 +14,11 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
+2.18.5 (not yet released)
+
+#623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
+ (requested by @Shaurya0108)
+
 2.18.4 (06-May-2025)
 
 #569: (ion) `IonParser` fails to parse some `long` values saying
