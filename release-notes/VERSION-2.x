@@ -22,6 +22,7 @@ Active maintainers:
  (fix by Vincent E)
 #616: CBOR text gets truncated on decoding
  (reported, fix contributed by Manuel S)
+#623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
 
 2.20.0 (28-Aug-2025)
 
