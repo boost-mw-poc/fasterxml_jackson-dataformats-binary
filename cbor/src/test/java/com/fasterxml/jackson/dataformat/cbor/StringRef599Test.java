@@ -2,12 +2,12 @@ package com.fasterxml.jackson.dataformat.cbor;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Test;
+
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 
 public class StringRef599Test extends CBORTestBase
 {
