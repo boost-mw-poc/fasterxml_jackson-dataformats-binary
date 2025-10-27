@@ -23,6 +23,8 @@ Active maintainers:
 
 2.20.1 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #601: Jackson subtype Avro schema unions are non-deterministic and therefore
   incompatible with each other
  (reported by Raphael W)
@@ -51,6 +53,8 @@ Active maintainers:
 
 2.19.3 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #601: Jackson subtype Avro schema unions are non-deterministic and therefore
   incompatible with each other
  (reported by Raphael W)
@@ -97,6 +101,8 @@ No changes since 2.19.1
 
 2.18.5 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
  (requested by @Shaurya0108)
 
