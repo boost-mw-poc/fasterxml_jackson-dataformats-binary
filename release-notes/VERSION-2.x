@@ -16,17 +16,22 @@ Active maintainers:
 
 2.21.0 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
  (requested by @Shaurya0108)
 
 2.20.1 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #601: Jackson subtype Avro schema unions are non-deterministic and therefore
   incompatible with each other
  (reported by Raphael W)
  (fix by Vincent E)
 #616: CBOR text gets truncated on decoding
  (reported, fix contributed by Manuel S)
+#623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
 
 2.20.0 (28-Aug-2025)
 
@@ -48,12 +53,16 @@ Active maintainers:
 
 2.19.3 (not yet released)
 
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
 #601: Jackson subtype Avro schema unions are non-deterministic and therefore
   incompatible with each other
  (reported by Raphael W)
  (fix by Vincent E)
 #616: CBOR text gets truncated on decoding
  (reported, fix contributed by Manuel S)
+#623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
+ (requested by @Shaurya0108)
 
 2.19.2 (18-Jul-2025)
 
@@ -89,6 +98,13 @@ No changes since 2.19.1
  (contributed by Manuel S)
 #571: Unable to deserialize a pojo with IonStruct
  (reported, fix contributed by Josh C)
+
+2.18.5 (not yet released)
+
+#599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
+ (reported by Yohei K)
+#623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
+ (requested by @Shaurya0108)
 
 2.18.4 (06-May-2025)
 
