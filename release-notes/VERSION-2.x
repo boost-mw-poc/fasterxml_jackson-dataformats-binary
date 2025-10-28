@@ -64,7 +64,7 @@ No changes since 2.19.1
 #571: Unable to deserialize a pojo with IonStruct
  (reported, fix contributed by Josh C)
 
-2.18.5 (not yet released)
+2.18.5 (27-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
  (reported by Yohei K)
