@@ -14,7 +14,7 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
-2.18.5 (not yet released)
+2.18.5 (27-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
  (reported by Yohei K)
