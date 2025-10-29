@@ -18,7 +18,7 @@ Active maintainers:
 
 No changes since 2.19
 
-2.19.3 (not yet released)
+2.19.3 (29-Oct-2025)
 
 #601: Jackson subtype Avro schema unions are non-deterministic and therefore
   incompatible with each other
