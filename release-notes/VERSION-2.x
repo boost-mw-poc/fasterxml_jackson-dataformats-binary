@@ -21,7 +21,7 @@ Active maintainers:
 #623: (ion) Upgrade `ion-java` dep to 1.11.11 (from 1.11.10)
  (requested by @Shaurya0108)
 
-2.20.1 (not yet released)
+2.20.1 (30-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
  (reported by Yohei K)
@@ -51,7 +51,8 @@ Active maintainers:
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
-2.19.3 (not yet released)
+2.19.4 (29-Oct-2025)
+2.19.3 (29-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
  (reported by Yohei K)
@@ -99,7 +100,7 @@ No changes since 2.19.1
 #571: Unable to deserialize a pojo with IonStruct
  (reported, fix contributed by Josh C)
 
-2.18.5 (not yet released)
+2.18.5 (27-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
  (reported by Yohei K)
