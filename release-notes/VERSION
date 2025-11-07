@@ -29,6 +29,7 @@ implementations)
 #629: (ion) Unnecessary `IOException` in `IonObjectMapper` method signatures
  (fix contributed by Michael L)
 
+3.0.2 (07-Nov-2025)
 3.0.1 (21-Oct-2025)
 
 No changes since 3.0.0
