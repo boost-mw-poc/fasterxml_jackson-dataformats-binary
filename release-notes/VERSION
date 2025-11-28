@@ -14,7 +14,7 @@ implementations)
 === Releases ===
 ------------------------------------------------------------------------
 
-3.0.3 (not yet released)
+3.0.3 (28-Nov-2025)
 
 - (avro) Upgrade `avro` lib dep to 1.11.5 (from 1.11.4)
 
