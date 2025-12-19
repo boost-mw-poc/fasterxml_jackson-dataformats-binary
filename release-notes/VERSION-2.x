@@ -44,6 +44,13 @@ Active maintainers:
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
+-----
+
+Not yet released
+
+#640: (cbor) CBOR throws ArrayIndexOutOfBoundsException with long ASCII text
+ (reported, fix contributed by Manuel S)
+
 2.19.4 (29-Oct-2025)
 2.19.3 (29-Oct-2025)
 
