@@ -24,7 +24,7 @@ Active maintainers:
  (reported by Josh C)
 - (avro) Upgrade `avro` lib dep to 1.11.5 (from 1.11.4)
 
-2.20.2 (not yet released)
+2.20.2 (19-Jan-2026)
 
 #640: (cbor) CBOR throws ArrayIndexOutOfBoundsException with long ASCII text
  (reported, fix contributed by Manuel S)
