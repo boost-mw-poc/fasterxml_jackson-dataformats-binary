@@ -14,6 +14,11 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
+2.18.6 (not yet released)
+
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
+
 2.18.5 (27-Oct-2025)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
