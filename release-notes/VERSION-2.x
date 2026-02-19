@@ -18,8 +18,6 @@ Active maintainers:
 
 No changes since 2.19
 
------
-
 Not yet released
 
 #640: (cbor) CBOR throws ArrayIndexOutOfBoundsException with long ASCII text
@@ -71,6 +69,11 @@ No changes since 2.19.1
  (contributed by Manuel S)
 #571: Unable to deserialize a pojo with IonStruct
  (reported, fix contributed by Josh C)
+
+2.18.6 (not yet released)
+
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
 
 2.18.5 (27-Oct-2025)
 
