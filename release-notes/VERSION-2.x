@@ -14,6 +14,17 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
+2.22.0 (not yet released)
+
+No changes since 2.21
+
+2.21.1 (not yet released)
+
+#645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
+  use of Avro core 1.12.1 (2.x)
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
+
 2.21.0 (18-Jan-2026)
 
 #599: (cbor) Unable to deserialize stringref-enabled CBOR with ignored properties
@@ -24,7 +35,7 @@ Active maintainers:
  (reported by Josh C)
 - (avro) Upgrade `avro` lib dep to 1.11.5 (from 1.11.4)
 
-2.20.2 (not yet released)
+2.20.2 (19-Jan-2026)
 
 #640: (cbor) CBOR throws ArrayIndexOutOfBoundsException with long ASCII text
  (reported, fix contributed by Manuel S)
