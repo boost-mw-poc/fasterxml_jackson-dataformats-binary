@@ -72,6 +72,8 @@ No changes since 2.19.1
 
 2.18.6 (not yet released)
 
+#645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
+  use of Avro core 1.12.1 (2.x)
 #649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
   when creating parser with fixed buffer
 
