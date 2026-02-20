@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import com.fasterxml.jackson.dataformat.smile.*;
 
-abstract class AsyncTestBase extends BaseTestForSmile
+public abstract class AsyncTestBase extends BaseTestForSmile
 {
     final static String SPACES = "                ";
 
