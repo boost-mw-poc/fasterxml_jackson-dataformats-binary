@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.dataformat.cbor;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,6 +112,18 @@ public abstract class CBORTestBase
                 .enable(CBORGenerator.Feature.STRINGREF)
                 .build()
                 .createGenerator(result);
+    }
+
+    /*
+    /**********************************************************
+    /* Parser construction
+    /**********************************************************
+     */
+
+    protected JsonParser createParserUsingStream(TokenStreamFactory f, byte[] input)
+        throws IOException
+    {
+        return f.createParser(new ByteArrayInputStream(input));
     }
 
     /*
