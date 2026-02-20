@@ -269,6 +269,10 @@ public abstract class BaseTestForSmile
         return str.getBytes(StandardCharsets.UTF_8);
     }
 
+    protected static String utf8String(ByteArrayOutputStream bytes) {
+        return new String(bytes.toByteArray(), StandardCharsets.UTF_8);
+    }
+    
     protected static byte[] concat(byte[] ... chunks)
     {
         int len = 0;
