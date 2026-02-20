@@ -1,4 +1,4 @@
-package com.fasterxml.jackson.dataformat.cbor.gen.constraints;
+package com.fasterxml.jackson.dataformat.cbor.constraints;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.StreamReadConstraints;
