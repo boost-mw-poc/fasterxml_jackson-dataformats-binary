@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.dataformat.smile;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.core.*;
@@ -159,6 +160,18 @@ public abstract class BaseTestForSmile
 
     /*
     /**********************************************************
+    /* Parser construction
+    /**********************************************************
+     */
+
+    protected JsonParser createParserUsingStream(TokenStreamFactory f, byte[] input)
+        throws IOException
+    {
+        return f.createParser(new ByteArrayInputStream(input));
+    }
+
+    /*
+    /**********************************************************
     /* Additional assertion methods
     /**********************************************************
      */
@@ -252,6 +265,14 @@ public abstract class BaseTestForSmile
         return '"'+str+'"';
     }
 
+    protected static byte[] utf8Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_8);
+    }
+
+    protected static String utf8String(ByteArrayOutputStream bytes) {
+        return new String(bytes.toByteArray(), StandardCharsets.UTF_8);
+    }
+    
     protected static byte[] concat(byte[] ... chunks)
     {
         int len = 0;
