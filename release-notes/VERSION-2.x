@@ -24,6 +24,8 @@ No changes since 2.21
   use of Avro core 1.12.1 (2.x)
 #649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
   when creating parser with fixed buffer
+#651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
+#652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
 
 2.21.0 (18-Jan-2026)
 
@@ -125,6 +127,8 @@ No changes since 2.19.1
   use of Avro core 1.12.1 (2.x)
 #649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
   when creating parser with fixed buffer
+#651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
+#652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
 
 2.18.5 (27-Oct-2025)
 
