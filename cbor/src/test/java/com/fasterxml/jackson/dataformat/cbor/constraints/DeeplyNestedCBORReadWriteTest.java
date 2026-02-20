@@ -1,4 +1,4 @@
-package com.fasterxml.jackson.dataformat.cbor.gen.constraints;
+package com.fasterxml.jackson.dataformat.cbor.constraints;
 
 import org.junit.jupiter.api.Test;
 
