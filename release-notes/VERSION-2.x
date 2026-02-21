@@ -22,6 +22,7 @@ Active maintainers:
   when creating parser with fixed buffer
 #651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
 #652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
+- Minor fix to `ProtobufGenerator._reportEnumError()` helper method
 
 2.18.5 (27-Oct-2025)
 
