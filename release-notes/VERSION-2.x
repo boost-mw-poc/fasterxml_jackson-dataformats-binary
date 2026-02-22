@@ -14,7 +14,7 @@ Active maintainers:
 === Releases ===
 ------------------------------------------------------------------------
 
-2.18.6 (not yet released)
+2.18.6 (22-Feb-2026)
 
 #645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
   use of Avro core 1.12.1 (2.x)
