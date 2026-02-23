@@ -14,18 +14,13 @@ implementations)
 === Releases ===
 ------------------------------------------------------------------------
 
-3.1.0 (not yet released)
+3.1.0 (23-Feb-2026)
 
 #73: (protobuf) Cannot resolve inner types in protoc definitions
  (reported by Kenji N)
  (fix by @cowtowncoder, w/ Claude code)
 #436: (ion) `IonFactory.createParser(IonReader)` does not initialize state
  (fix by @cowtowncoder, w/ Claude code)
-#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
-  when creating parser with fixed buffer
-
-3.1.0-rc1 (27-Jan-2026)
-
 #514: (avro) Update to Avro 1.12.1 (Jackson 3.x only)
 #598: (protobuf) Protobuf parser state handling wrong for implicit close (END_OBJECT)
  (fix by @cowtowncoder, w/ Claude code)
@@ -39,6 +34,8 @@ implementations)
  (reported by Josh C)
 #629: (ion) Unnecessary `IOException` in `IonObjectMapper` method signatures
  (fix contributed by Michael L)
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
 
 3.0.4 (not yet released)
 
