@@ -18,10 +18,16 @@ Active maintainers:
 
 No changes since 2.19
 
-Not yet released
+2.19.5 (not yet released)
 
 #640: (cbor) CBOR throws ArrayIndexOutOfBoundsException with long ASCII text
  (reported, fix contributed by Manuel S)
+#645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
+  use of Avro core 1.12.1 (2.x)
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
+#651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
+#652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
 
 2.19.4 (29-Oct-2025)
 2.19.3 (29-Oct-2025)
