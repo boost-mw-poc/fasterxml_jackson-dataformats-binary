@@ -1,25 +1,18 @@
-package tools.jackson.dataformat.cbor.parse;
+package tools.jackson.dataformat.smile.parse;
 
 import org.junit.jupiter.api.Test;
 
 import tools.jackson.core.*;
-
+import tools.jackson.core.io.SerializedString;
 import tools.jackson.databind.*;
 
-import tools.jackson.dataformat.cbor.CBORTestBase;
+import tools.jackson.dataformat.smile.BaseTestForSmile;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Basic tests for `JsonParser.streamReadContext()` handling
- * wrt. current index, entry count (binary content won't have
- * line/column number).
- *
- * @since 3.2
- */
-public class ParserReadContextTest extends CBORTestBase
+public class ParserReadContextTest extends BaseTestForSmile
 {
-    private final ObjectMapper MAPPER = cborMapper();
+    private final ObjectMapper MAPPER = smileMapper();
 
     // Copied from databind `SimpleParserTest`
     @Test
@@ -33,7 +26,7 @@ public class ParserReadContextTest extends CBORTestBase
             +"}"
             ;
 
-        final byte[] doc = cborDoc(MAPPER, JSON);
+        final byte[] doc = _smileDoc(MAPPER.writer(), JSON);
 
         try (JsonParser p = MAPPER.createParser(doc)) {
             _testKeywords(p);
@@ -69,8 +62,8 @@ public class ParserReadContextTest extends CBORTestBase
         assertFalse(ctxt.inRoot());
         assertFalse(ctxt.inArray());
         assertTrue(ctxt.inObject());
-        assertEquals(0, ctxt.getCurrentIndex());
         assertEquals(0, ctxt.getEntryCount());
+        assertEquals(0, ctxt.getCurrentIndex());
 
         assertToken(JsonToken.PROPERTY_NAME, p.nextToken());
         verifyFieldName(p, "key1");
@@ -91,7 +84,7 @@ public class ParserReadContextTest extends CBORTestBase
         assertEquals(0, ctxt.getCurrentIndex());
         assertEquals(1, ctxt.getEntryCount());
 
-        assertToken(JsonToken.PROPERTY_NAME, p.nextToken());
+        assertEquals("key2", p.nextName());
         verifyFieldName(p, "key2");
         ctxt = p.streamReadContext();
         assertEquals(1, ctxt.getCurrentIndex());
@@ -103,7 +96,7 @@ public class ParserReadContextTest extends CBORTestBase
         assertEquals(2, ctxt.getEntryCount());
         assertEquals("key2", ctxt.currentName());
 
-        assertToken(JsonToken.PROPERTY_NAME, p.nextToken());
+        assertTrue(p.nextName(new SerializedString("key3")));
         verifyFieldName(p, "key3");
         assertEquals(2, ctxt.getCurrentIndex());
         assertEquals(3, ctxt.getEntryCount());
