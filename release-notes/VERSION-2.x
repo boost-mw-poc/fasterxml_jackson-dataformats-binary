@@ -68,6 +68,15 @@ Active maintainers:
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
 
+2.19.5 (not yet released)
+
+#645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
+  use of Avro core 1.12.1 (2.x)
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
+#651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
+#652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
+
 2.19.4 (29-Oct-2025)
 2.19.3 (29-Oct-2025)
 
