@@ -20,7 +20,7 @@ No changes since 2.21
 
 2.21.2 (20-Mar-2026)
 
-No changes since 2.21.1
+No changes since 2.21.1.
 
 2.21.1 (22-Feb-2026)
 
