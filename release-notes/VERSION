@@ -18,6 +18,12 @@ implementations)
 
 No changes since 3.1
 
+3.1.2 (not yet released)
+
+#686: `CBORParser._finishLongTextAscii` returns negative length when `TextBuffer`
+  segment > I/O buffer, leaving non-ASCII byte unconsumed
+ (fixed by Halil İbrahim Ş)
+
 3.1.1 (27-Mar-2026)
 
 #387: Avro generator should enforce `StreamWriteConstraints.maxNestingDepth`
