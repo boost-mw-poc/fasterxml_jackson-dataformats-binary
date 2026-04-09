@@ -2589,7 +2589,8 @@ public class CBORParser extends ParserBase
     }
 
     /**
-     * Consumes as many ascii chars as possible in a tight loop. Returns the amount of bytes remaining.
+     * Consumes as many ascii chars as possible in a tight loop.
+     * Returns the amount of bytes remaining.
      */
     private final int _finishLongTextAscii(int len) throws JacksonException
     {
@@ -2615,7 +2616,10 @@ public class CBORParser extends ParserBase
                 --outPtr;
                 _inputPtr = inPtr - 1;
                 _textBuffer.setCurrentLength(outPtr);
-                return len - outPtr;
+                // `len` was already decremented for all previous iterations; subtract only
+                // the bytes consumed in THIS iteration (= _inputPtr), since
+                // _tryToLoadToHaveAtLeast always resets _inputPtr to 0 before the inner loop.
+                return len - _inputPtr;
             }
             _inputPtr = inPtr;
             if (outPtr >= outBuf.length) {

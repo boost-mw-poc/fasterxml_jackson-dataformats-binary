@@ -18,6 +18,16 @@ Active maintainers:
 
 No changes since 2.21
 
+2.21.3 (not yet released)
+
+#686: `CBORParser._finishLongTextAscii` returns negative length when `TextBuffer`
+  segment > I/O buffer, leaving non-ASCII byte unconsumed
+ (fixed by Halil İbrahim Ş)
+
+2.21.2 (20-Mar-2026)
+
+No changes since 2.21.1.
+
 2.21.1 (22-Feb-2026)
 
 #645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
@@ -71,6 +81,15 @@ No changes since 2.21
  (contributed by Oleg K)
 - Fixes wrt [core#1438] (ParserBase.close() not resetting current token)
 - Generate SBOMs [JSTEP-14]
+
+2.19.5 (not yet released)
+
+#645: (avro) Remove use of Avro `Schema.Parser().setValidate()` to allow
+  use of Avro core 1.12.1 (2.x)
+#649: (cbor, smile) `StreamReadConstraints.maxDocumentLength` not checked
+  when creating parser with fixed buffer
+#651: (smile) Ensure Smile backend supports `StreamReadConstraints.maxTokenCount`
+#652: (cbor) Ensure CBOR backend supports `StreamReadConstraints.maxTokenCount`
 
 2.19.4 (29-Oct-2025)
 2.19.3 (29-Oct-2025)
