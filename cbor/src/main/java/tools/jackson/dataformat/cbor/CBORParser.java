@@ -2601,6 +2601,9 @@ public class CBORParser extends ParserBase
             // load as much input as possible
             int size = Math.min(len, Math.min((outBuf.length - outPtr), input.length));
             if (!_tryToLoadToHaveAtLeast(size)) {
+                // [dataformats-binary#568]: sync TextBuffer before returning so
+                // the caller sees any chars already written in previous iterations.
+                _textBuffer.setCurrentLength(outPtr);
                 return len;
             }
             int outEnd = size + outPtr;
@@ -2744,20 +2747,24 @@ public class CBORParser extends ParserBase
         char[] outBuf = _textBuffer.getBufferWithoutReset();
         int outEnd = outBuf.length;
         while (true) {
-            // besides of which just need to ensure there's content
-            _loadMoreForChunkIfNeeded();
+            // Ensure we have chunk data to consume
+            if (_inputPtr >= _chunkEnd) {
+                if (_chunkLeft == 0) {
+                    _textBuffer.setCurrentLength(outPtr);
+                    return true;
+                }
+                _loadMoreForChunkIfNeeded();
+            }
 
-            // Find the size of the loop
-            int inSize =  _chunkEnd - _inputPtr;
+            int inSize = _chunkEnd - _inputPtr;
             int outSize = outEnd - outPtr;
             int inputPtr = _inputPtr;
             int inputPtrEnd = _inputPtr + Math.min(inSize, outSize);
             int i = 0;
-            // loop with copying what we can.
+            // Tight loop to copy ASCII bytes
             while (inputPtr < inputPtrEnd && i >= 0) {
                 i = input[inputPtr++];
-                char val = (char) i;
-                outBuf[outPtr++] = val;
+                outBuf[outPtr++] = (char) i;
             }
             _inputPtr = inputPtr;
 
@@ -2765,7 +2772,6 @@ public class CBORParser extends ParserBase
                 // Found a non-ascii char, correct pointers and return to the caller.
                 _inputPtr -= 1;
                 _textBuffer.setCurrentLength(outPtr - 1);
-                // return false to signal this to the calling code to allow the multi-byte code-path to kick.
                 return false;
             }
             // Need more room?
@@ -2774,11 +2780,6 @@ public class CBORParser extends ParserBase
                 outPtr = 0;
                 outEnd = outBuf.length;
             }
-            if (_inputPtr < _chunkEnd || _chunkLeft > 0) {
-                continue;
-            }
-            _textBuffer.setCurrentLength(outPtr);
-            return true;
         }
     }
 

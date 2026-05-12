@@ -18,9 +18,14 @@ Active maintainers:
 
 No changes since 2.21
 
-2.21.3 (not yet released)
+2.21.4 (not yet released)
 
-#686: `CBORParser._finishLongTextAscii` returns negative length when `TextBuffer`
+#691: (cbor) Add parameterized tests covering all ASCII-optimization exit paths in CBORParser
+ (contributed by Manuel S)
+
+2.21.3 (28-Apr-2026)
+
+#686: (cbor) `CBORParser._finishLongTextAscii` returns negative length when `TextBuffer`
   segment > I/O buffer, leaving non-ASCII byte unconsumed
  (fixed by Halil İbrahim Ş)
 
@@ -139,6 +144,10 @@ No changes since 2.19.1
  (contributed by Manuel S)
 #571: Unable to deserialize a pojo with IonStruct
  (reported, fix contributed by Josh C)
+
+2.18.7 (24-Apr-2026)
+
+No changes since 2.18.6
 
 2.18.6 (22-Feb-2026)
 
