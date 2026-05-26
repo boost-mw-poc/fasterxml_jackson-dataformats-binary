@@ -25,8 +25,10 @@ implementations)
 #691: (cbor) Add parameterized tests covering all ASCII-optimization exit paths
   in CBORParser
  (contributed by Manuel S)
+#693: (avro) Incomplete number length validation in Avro decoder (for `BigDecimal`)
+ (reported by @tonghuaroot)
 
-3.1.3 (01-Mau-2026)
+3.1.3 (01-May-2026)
 
 No changes since 3.1.2
 
