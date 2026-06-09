@@ -3,9 +3,8 @@
   <parent>
     <groupId>tools.jackson</groupId>
     <artifactId>jackson-base</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1-SNAPSHOT</version>
   </parent>
-
   <groupId>tools.jackson.dataformat</groupId>
   <artifactId>jackson-dataformats-binary</artifactId>
   <name>Jackson dataformats: Binary</name>
